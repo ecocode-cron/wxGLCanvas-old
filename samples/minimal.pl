@@ -1,11 +1,11 @@
 #!/usr/bin/perl -w
 #############################################################################
 ## Name:        minimal.pl
-## Purpose:     Minimal wxPerl sample
+## Purpose:     Minimal Wx::GLCanvas sample
 ## Author:      Mattia Barbon
 ## Modified by:
-## Created:     29/10/2000
-## RCS-ID:      
+## Created:     26/07/2003
+## RCS-ID:      $Id: minimal.pl,v 1.2 2003/09/12 21:32:51 mbarbon Exp $
 ## Copyright:   (c) 2000 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
@@ -39,8 +39,9 @@ package MyCanvas;
 
 use strict;
 use Wx::Event qw(EVT_PAINT EVT_SIZE EVT_ERASE_BACKGROUND);
-use base 'Wx::GLCanvas';
+# must load OpenGL *before* Wx::GLCanvas
 use OpenGL qw(:glconstants :glfunctions);
+use base 'Wx::GLCanvas';
 
 sub new {
   my $class = shift;
