@@ -1,0 +1,11 @@
+Changes
+GLCanvas.pm
+GLCanvas.xs
+MANIFEST
+Makefile.PL
+README.txt
+glcanvas.cpp
+msw_myglcanvas.h
+myglcanvas.h
+samples/minimal.pl
+typemap
