@@ -8,4 +8,5 @@ glcanvas.cpp
 msw_myglcanvas.h
 myglcanvas.h
 samples/minimal.pl
+t/01_load.t
 typemap
