@@ -1,6 +1,6 @@
-Wx::GLCanvas is a wrapper for wxWindows' OpenGL canvas.
+Wx::GLCanvas is a wrapper for wxWidgets' OpenGL canvas.
 
-Copyright (c) 2003 Mattia Barbon.
+Copyright (c) 2003, 2005 Mattia Barbon.
 This package is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
@@ -15,4 +15,3 @@ Build and install wxPerl, then
 perl Makefile.PL
 make
 make install
-

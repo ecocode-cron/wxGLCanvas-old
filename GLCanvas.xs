@@ -4,8 +4,8 @@
 // Author:      Mattia Barbon
 // Modified by:
 // Created:     26/07/2003
-// RCS-ID:      $Id: GLCanvas.xs,v 1.2 2003/09/12 21:30:50 mbarbon Exp $
-// Copyright:   (c) 2003 Mattia Barbon
+// RCS-ID:      $Id: GLCanvas.xs,v 1.3 2005/01/05 14:41:22 mbarbon Exp $
+// Copyright:   (c) 2003, 2005 Mattia Barbon
 // Licence:     This program is free software; you can redistribute it and/or
 //              modify it under the same terms as Perl itself
 /////////////////////////////////////////////////////////////////////////////
@@ -15,6 +15,8 @@
 #include <wx/defs.h>
 #include "wx/window.h"
 #include "cpp/wxapi.h"
+
+#undef THIS
 
 #if WXPERL_W_VERSION_GE( 2, 5, 0 ) && wxUSE_GLCANVAS
     #include <wx/glcanvas.h>
