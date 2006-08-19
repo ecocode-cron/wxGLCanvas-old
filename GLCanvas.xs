@@ -4,7 +4,7 @@
 // Author:      Mattia Barbon
 // Modified by:
 // Created:     26/07/2003
-// RCS-ID:      $Id: GLCanvas.xs,v 1.3 2005/01/05 14:41:22 mbarbon Exp $
+// RCS-ID:      $Id: GLCanvas.xs,v 1.4 2006/08/19 18:09:39 mbarbon Exp $
 // Copyright:   (c) 2003, 2005 Mattia Barbon
 // Licence:     This program is free software; you can redistribute it and/or
 //              modify it under the same terms as Perl itself
@@ -15,6 +15,9 @@
 #include <wx/defs.h>
 #include "wx/window.h"
 #include "cpp/wxapi.h"
+#include "cpp/overload.h"
+#include "cpp/ovl_const.h"
+#include "cpp/ovl_const.cpp"
 
 #undef THIS
 
@@ -26,8 +29,8 @@
         #define wxUSE_GLCANVAS 1
         #define WXDLLIMPEXP_GL
 
-        #include "myglcanvas.h"
-        #include "glcanvas.cpp"
+        #include "wx/myglcanvas.h"
+        #include "wx/glcanvas.cpp"
     #else
         #include <wx/glcanvas.h>
     #endif
@@ -38,8 +41,33 @@ MODULE=Wx__GLCanvas PACKAGE=Wx::GLCanvas
 BOOT:
   INIT_PLI_HELPERS( wx_pli_helpers );
 
-wxGLCanvas*
-wxGLCanvas::new( parent, context, id, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+## DECLARE_OVERLOAD( wglx, Wx::GLContext )
+## DECLARE_OVERLOAD( wglc, Wx::GLCanvas )
+
+void
+wxGLCanvas::new( ... )
+  PPCODE:
+    BEGIN_OVERLOAD()
+        MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_n_wpoi_wsiz_n_s, newDefault, 1 )
+        MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_wglx_n_wpoi_wsiz_n_s, newContext, 2 )
+        MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_wglc_n_wpoi_wsiz_n_s, newCanvas, 2 )
+    END_OVERLOAD( Wx::GLCanvas::new )
+
+static wxGLCanvas*
+wxGLCanvas::newDefault( parent, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+    wxWindow* parent
+    wxWindowID id
+    wxPoint pos
+    wxSize size
+    long style
+    wxString name
+  CODE:
+    RETVAL = new wxGLCanvas( parent, id, pos, size, style, name );
+    wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
+  OUTPUT: RETVAL
+
+static wxGLCanvas*
+wxGLCanvas::newContext( parent, context, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
     wxWindow* parent
     wxGLContext* context
     wxWindowID id
@@ -52,8 +80,19 @@ wxGLCanvas::new( parent, context, id, pos = wxDefaultPosition, size = wxDefaultS
     wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
   OUTPUT: RETVAL
 
-##wxGLCanvas*
-##wxGLCanvas::newWithContext()
+static wxGLCanvas*
+wxGLCanvas::newCanvas( parent, canvas, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+    wxWindow* parent
+    wxGLCanvas* canvas
+    wxWindowID id
+    wxPoint pos
+    wxSize size
+    long style
+    wxString name
+  CODE:
+    RETVAL = new wxGLCanvas( parent, canvas, id, pos, size, style, name );
+    wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
+  OUTPUT: RETVAL
 
 wxGLContext*
 wxGLCanvas::GetContext()
