@@ -8,7 +8,7 @@
 #define wxGLCanvasName _T("GLCanvas")
 
 #if defined(__WXMSW__)
-#include "msw_myglcanvas.h"
+#include "wx/msw_myglcanvas.h"
 #elif defined(__WXMOTIF__)
 #include "wx/x11/glcanvas.h"
 #elif defined(__WXGTK__)

@@ -1,12 +1,12 @@
 Changes
-GLCanvas.pm
 GLCanvas.xs
 MANIFEST
 Makefile.PL
 README.txt
-glcanvas.cpp
-msw_myglcanvas.h
-myglcanvas.h
-samples/minimal.pl
+lib/Wx/GLCanvas.pm
+lib/Wx/DemoModules/wxGLCanvas.pm
 t/01_load.t
 typemap
+wx/glcanvas.cpp
+wx/msw_myglcanvas.h
+wx/myglcanvas.h

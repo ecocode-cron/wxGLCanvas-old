@@ -1,51 +1,27 @@
-#!/usr/bin/perl -w
 #############################################################################
-## Name:        minimal.pl
-## Purpose:     Minimal Wx::GLCanvas sample
+## Name:        lib/Wx/DemoModules/wxGLCanvas.pm
+## Purpose:     wxPerl demo helper for Wx::GLCanvas
 ## Author:      Mattia Barbon
 ## Modified by:
 ## Created:     26/07/2003
-## RCS-ID:      $Id: minimal.pl,v 1.2 2003/09/12 21:32:51 mbarbon Exp $
+## RCS-ID:      $Id: wxGLCanvas.pm,v 1.1 2006/08/19 18:07:56 mbarbon Exp $
 ## Copyright:   (c) 2000 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
 #############################################################################
 
-use Wx;
-
-# every program must have a Wx::App-derive class
-package MyApp;
+package Wx::DemoModules::wxGLCanvas;
 
 use strict;
-use base 'Wx::App';
 
-# this is called automatically on object creation
-sub OnInit {
-  my( $this ) = @_;
-
-  # create new MyFrame
-  my( $frame ) = MyFrame->new( "Lame wxGLCanvas demo",
-			       Wx::Point->new( 50, 50 ),
-			       Wx::Size->new( 450, 350 )
-                             );
-
-  # show the frame
-  $frame->Show( 1 );
-
-  1;
-}
-
-package MyCanvas;
-
-use strict;
 use Wx::Event qw(EVT_PAINT EVT_SIZE EVT_ERASE_BACKGROUND);
 # must load OpenGL *before* Wx::GLCanvas
 use OpenGL qw(:glconstants :glfunctions);
-use base 'Wx::GLCanvas';
+use base qw(Wx::GLCanvas);
 
 sub new {
-  my $class = shift;
-  my $self = $class->SUPER::new( @_ );
+  my( $class, $parent ) = @_;
+  my $self = $class->SUPER::new( $parent );
 
   EVT_PAINT( $self,
              sub {
@@ -151,34 +127,8 @@ sub Render {
   $self->SwapBuffers();
 }
 
-package MyFrame;
+sub tags { [ 'windows/glcanvas' => 'wxGLCanvas' ] }
+sub add_to_tags { qw(windows/glcanvas) }
+sub title { 'Cube' }
 
-use strict;
-use base 'Wx::Frame';
-
-use Wx::Event qw(EVT_MENU);
-use Wx qw(wxBITMAP_TYPE_ICO wxMENU_TEAROFF);
-
-# Parameters: title, position, size
-sub new {
-  my( $class ) = shift;
-  my( $this ) = $class->SUPER::new( undef, -1, $_[0], $_[1], $_[2] );
-
-  # load an icon and set it as frame icon
-  $this->SetIcon( Wx::GetWxPerlIcon() );
-
-  my $glcanvas = MyCanvas->new( $this, undef, -1 );
-
-  $this;
-}
-
-package main;
-
-# create an instance of the Wx::App-derived class
-my( $app ) = MyApp->new();
-# start processing events
-$app->MainLoop();
-
-# Local variables: #
-# mode: cperl #
-# End: #
+1;
