@@ -4,7 +4,7 @@
 ## Author:      Mattia Barbon
 ## Modified by:
 ## Created:     26/07/2003
-## RCS-ID:      $Id: GLCanvas.pm,v 1.1 2006/08/19 18:07:56 mbarbon Exp $
+## RCS-ID:      $Id: GLCanvas.pm,v 1.2 2006/11/06 11:12:56 mbarbon Exp $
 ## Copyright:   (c) 2003, 2005 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
@@ -16,7 +16,7 @@ use strict;
 use Wx;
 use base 'Wx::ScrolledWindow';
 
-$Wx::GLCanvas::VERSION = '0.04';
+$Wx::GLCanvas::VERSION = '0.05';
 
 Wx::load_dll( 'gl' );
 Wx::wx_boot( 'Wx::GLCanvas', $Wx::GLCanvas::VERSION );
