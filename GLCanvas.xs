@@ -4,7 +4,7 @@
 // Author:      Mattia Barbon
 // Modified by:
 // Created:     26/07/2003
-// RCS-ID:      $Id: GLCanvas.xs,v 1.5 2006/11/06 11:14:59 mbarbon Exp $
+// RCS-ID:      $Id: GLCanvas.xs,v 1.6 2006/11/11 16:14:17 mbarbon Exp $
 // Copyright:   (c) 2003, 2005 Mattia Barbon
 // Licence:     This program is free software; you can redistribute it and/or
 //              modify it under the same terms as Perl itself
@@ -151,10 +151,6 @@ wxGLContext::SetCurrent( wxGLCanvas* canvas )
 
 void
 wxGLContext::SetCurrent()
-
-void
-wxGLContext::SetColour( colour )
-    wxString colour
 
 void
 wxGLContext::SwapBuffers()
