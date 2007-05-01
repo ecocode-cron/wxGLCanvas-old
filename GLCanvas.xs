@@ -4,13 +4,15 @@
 // Author:      Mattia Barbon
 // Modified by:
 // Created:     26/07/2003
-// RCS-ID:      $Id: GLCanvas.xs,v 1.6 2006/11/11 16:14:17 mbarbon Exp $
+// RCS-ID:      $Id$
 // Copyright:   (c) 2003, 2005 Mattia Barbon
 // Licence:     This program is free software; you can redistribute it and/or
 //              modify it under the same terms as Perl itself
 /////////////////////////////////////////////////////////////////////////////
 
 #define STRICT
+#define PERL_NO_GET_CONTEXT
+#define WXINTL_NO_GETTEXT_MACRO 1
 
 #include <wx/defs.h>
 #include "wx/window.h"
@@ -49,8 +51,10 @@ wxGLCanvas::new( ... )
   PPCODE:
     BEGIN_OVERLOAD()
         MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_n_wpoi_wsiz_n_s, newDefault, 1 )
+#if WXPERL_W_VERSION_LT( 2, 9, 0 )
         MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_wglx_n_wpoi_wsiz_n_s, newContext, 2 )
         MATCH_REDISP_COUNT_ALLOWMORE( wxPliOvl_wwin_wglc_n_wpoi_wsiz_n_s, newCanvas, 2 )
+#endif
     END_OVERLOAD( Wx::GLCanvas::new )
 
 static wxGLCanvas*
@@ -62,9 +66,22 @@ wxGLCanvas::newDefault( parent, id = -1, pos = wxDefaultPosition, size = wxDefau
     long style
     wxString name
   CODE:
+#if WXPERL_W_VERSION_GE( 2, 9, 0 )
+    RETVAL = new wxGLCanvas( parent, id, NULL, pos, size, style, name );
+#else
     RETVAL = new wxGLCanvas( parent, id, pos, size, style, name );
+#endif
     wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
   OUTPUT: RETVAL
+
+#if WXPERL_W_VERSION_GE( 2, 9, 0 )
+
+void
+wxGLCanvas::SetCurrent( context )
+    wxGLContext* context
+  C_ARGS: *context
+
+#else
 
 static wxGLCanvas*
 wxGLCanvas::newContext( parent, context, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
@@ -99,6 +116,8 @@ wxGLCanvas::GetContext()
 
 void
 wxGLCanvas::SetCurrent()
+
+#endif
 
 #ifdef __WXMSW__
 
