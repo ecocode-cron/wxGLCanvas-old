@@ -4,7 +4,7 @@
 ## Author:      Mattia Barbon
 ## Modified by:
 ## Created:     26/07/2003
-## RCS-ID:      $Id: GLCanvas.pm,v 1.2 2006/11/06 11:12:56 mbarbon Exp $
+## RCS-ID:      $Id$
 ## Copyright:   (c) 2003, 2005 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
@@ -42,6 +42,11 @@ wxPerl distribution (wxGLCanvas).
 =head1 AUTHOR
 
 Mattia Barbon <mbarbon@cpan.org>
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =cut
 
