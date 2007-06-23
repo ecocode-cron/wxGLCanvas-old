@@ -1,5 +1,8 @@
 Revision history for Perl extension Wx::GLCanvas.
 
+0.06  Sat Jun 23 22:03:29 CEST 2007
+	- Compatibility with wxWidgets 2.9.x.
+
 0.05  Sat Nov 11 17:14:03 CET 2006
 	- Compilation fixes for wxWidgets 2.7.1 and 2.7.2.
 
