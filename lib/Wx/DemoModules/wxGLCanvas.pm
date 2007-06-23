@@ -4,8 +4,8 @@
 ## Author:      Mattia Barbon
 ## Modified by:
 ## Created:     26/07/2003
-## RCS-ID:      $Id: wxGLCanvas.pm,v 1.2 2006/08/27 15:39:06 mbarbon Exp $
-## Copyright:   (c) 2000 Mattia Barbon
+## RCS-ID:      $Id$
+## Copyright:   (c) 2000, 2006 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
 #############################################################################
@@ -55,13 +55,33 @@ sub new {
     return $self;
 }
 
+sub GetContext {
+    my( $self ) = @_;
+
+    if( Wx::wxVERSION >= 2.009 ) {
+        return $self->{context} ||= Wx::GLContext->new( $self );
+    } else {
+        return $self->SUPER::GetContext;
+    }
+}
+
+sub SetCurrent {
+    my( $self, $context ) = @_;
+
+    if( Wx::wxVERSION >= 2.009 ) {
+        return $self->SUPER::SetCurrent( $context );
+    } else {
+        return $self->SUPER::SetCurrent;
+    }
+}
+
 sub Resize {
     my( $self, $x, $y ) = @_;
 
     return unless $self->GetContext;
     $self->dirty( 0 );
 
-    $self->SetCurrent;
+    $self->SetCurrent( $self->GetContext );
     glViewport( 0, 0, $x, $y );
 
     glMatrixMode(GL_PROJECTION);
@@ -141,7 +161,7 @@ sub Render {
     my( $self, $dc ) = @_;
 
     return unless $self->GetContext;
-    $self->SetCurrent;
+    $self->SetCurrent( $self->GetContext );
     $self->InitGL;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -279,7 +299,7 @@ sub Render {
     my( $self, $dc ) = @_;
 
     return unless $self->GetContext;
-    $self->SetCurrent;
+    $self->SetCurrent( $self->GetContext );
 
     $self->InitGL;
 
