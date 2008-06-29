@@ -3,8 +3,9 @@ GLCanvas.xs
 MANIFEST
 Makefile.PL
 README.txt
-lib/Wx/GLCanvas.pm
+inc/MyMakeMaker.pm
 lib/Wx/DemoModules/wxGLCanvas.pm
+lib/Wx/GLCanvas.pm
 t/01_load.t
 t/zz_pod.t
 typemap

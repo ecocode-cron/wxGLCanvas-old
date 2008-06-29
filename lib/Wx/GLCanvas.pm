@@ -16,7 +16,7 @@ use strict;
 use Wx;
 use base 'Wx::ScrolledWindow';
 
-$Wx::GLCanvas::VERSION = '0.06';
+$Wx::GLCanvas::VERSION = '0.07';
 
 Wx::load_dll( 'gl' );
 Wx::wx_boot( 'Wx::GLCanvas', $Wx::GLCanvas::VERSION );
