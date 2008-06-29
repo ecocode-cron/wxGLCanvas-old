@@ -1,5 +1,7 @@
 Revision history for Perl extension Wx::GLCanvas.
 
+0.08
+
 0.07  Sun Jun 29 21:28:45 CEST 2008
 	- Try to fail gracefully if wxPerl has not been
 	  installed yet.
