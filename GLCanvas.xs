@@ -5,7 +5,7 @@
 // Modified by:
 // Created:     26/07/2003
 // RCS-ID:      $Id$
-// Copyright:   (c) 2003, 2005, 2007 Mattia Barbon
+// Copyright:   (c) 2003, 2005, 2007-2008 Mattia Barbon
 // Licence:     This program is free software; you can redistribute it and/or
 //              modify it under the same terms as Perl itself
 /////////////////////////////////////////////////////////////////////////////
@@ -38,6 +38,23 @@
     #endif
 #endif
 
+int* wxPli_get_attribute_list( pTHX_ SV* avref )
+{
+    if( !avref )
+        return NULL;
+
+    // special case for empty array
+    if(    SvROK( avref )
+        && SvTYPE( SvRV( avref ) ) == SVt_PVAV
+        && av_len( (AV*) SvRV( avref ) ) == -1 )
+        return NULL;
+
+    int* array;
+    wxPli_av_2_intarray( aTHX_ avref, &array );
+
+    return array;
+}
+
 MODULE=Wx__GLCanvas PACKAGE=Wx::GLCanvas
 
 BOOT:
@@ -58,18 +75,20 @@ wxGLCanvas::new( ... )
     END_OVERLOAD( Wx::GLCanvas::new )
 
 static wxGLCanvas*
-wxGLCanvas::newDefault( parent, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+wxGLCanvas::newDefault( parent, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName, attributes = NULL )
     wxWindow* parent
     wxWindowID id
     wxPoint pos
     wxSize size
     long style
     wxString name
+    SV_null* attributes
   CODE:
+    wxPliArrayGuard<int> attrs = wxPli_get_attribute_list( aTHX_ attributes );
 #if WXPERL_W_VERSION_GE( 2, 9, 0 )
-    RETVAL = new wxGLCanvas( parent, id, NULL, pos, size, style, name );
+    RETVAL = new wxGLCanvas( parent, id, attrs, pos, size, style, name );
 #else
-    RETVAL = new wxGLCanvas( parent, id, pos, size, style, name );
+    RETVAL = new wxGLCanvas( parent, id, pos, size, style, name, attrs );
 #endif
     wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
   OUTPUT: RETVAL
@@ -84,7 +103,7 @@ wxGLCanvas::SetCurrent( context )
 #else
 
 static wxGLCanvas*
-wxGLCanvas::newContext( parent, context, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+wxGLCanvas::newContext( parent, context, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName, attributes = NULL )
     wxWindow* parent
     wxGLContext* context
     wxWindowID id
@@ -92,13 +111,15 @@ wxGLCanvas::newContext( parent, context, id = -1, pos = wxDefaultPosition, size 
     wxSize size
     long style
     wxString name
+    SV_null* attributes
   CODE:
-    RETVAL = new wxGLCanvas( parent, context, id, pos, size, style, name );
+    wxPliArrayGuard<int> attrs = wxPli_get_attribute_list( aTHX_ attributes );
+    RETVAL = new wxGLCanvas( parent, context, id, pos, size, style, name, attrs );
     wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
   OUTPUT: RETVAL
 
 static wxGLCanvas*
-wxGLCanvas::newCanvas( parent, canvas, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName )
+wxGLCanvas::newCanvas( parent, canvas, id = -1, pos = wxDefaultPosition, size = wxDefaultSize, style = 0, name = wxGLCanvasName, attributes = NULL )
     wxWindow* parent
     wxGLCanvas* canvas
     wxWindowID id
@@ -106,8 +127,10 @@ wxGLCanvas::newCanvas( parent, canvas, id = -1, pos = wxDefaultPosition, size = 
     wxSize size
     long style
     wxString name
+    SV_null* attributes
   CODE:
-    RETVAL = new wxGLCanvas( parent, canvas, id, pos, size, style, name );
+    wxPliArrayGuard<int> attrs = wxPli_get_attribute_list( aTHX_ attributes );
+    RETVAL = new wxGLCanvas( parent, canvas, id, pos, size, style, name, attrs );
     wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
   OUTPUT: RETVAL
 
@@ -134,7 +157,8 @@ wxGLCanvas::SwapBuffers()
 
 MODULE=Wx__GLCanvas PACKAGE=Wx::GLContext
 
-#if WXPERL_W_VERSION_GE( 2, 7, 1 )
+#if    ( WXPERL_W_VERSION_GE( 2, 7, 1 ) && !defined( __WXMAC__ ) ) \
+    || WXPERL_W_VERSION_GE( 2, 9, 0 )
 
 wxGLContext*
 wxGLContext::new(win, cxt = NULL )
@@ -146,6 +170,7 @@ wxGLContext::new(win, cxt = NULL )
   OUTPUT: RETVAL
 
 #else
+#if !defined( __WXMAC__ )
 
 wxGLContext*
 wxGLContext::new( isRGB, win, palette = (wxPalette*)&wxNullPalette, cxt = NULL )
@@ -159,8 +184,10 @@ wxGLContext::new( isRGB, win, palette = (wxPalette*)&wxNullPalette, cxt = NULL )
   OUTPUT: RETVAL
 
 #endif
+#endif
 
-#if WXPERL_W_VERSION_GE( 2, 7, 1 )
+#if    ( WXPERL_W_VERSION_GE( 2, 7, 1 ) && !defined( __WXMAC__ ) ) \
+    || WXPERL_W_VERSION_GE( 2, 9, 0 )
 
 void
 wxGLContext::SetCurrent( wxGLCanvas* canvas )
