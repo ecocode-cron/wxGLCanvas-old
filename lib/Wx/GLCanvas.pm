@@ -16,10 +16,38 @@ use strict;
 use Wx;
 use base 'Wx::ScrolledWindow';
 
+require Exporter; *import = \&Exporter::import;
+our @EXPORT_OK =
+  ( qw(WX_GL_RGBA WX_GL_BUFFER_SIZE WX_GL_LEVEL WX_GL_DOUBLEBUFFER
+       WX_GL_STEREO WX_GL_AUX_BUFFERS WX_GL_MIN_RED WX_GL_MIN_GREEN
+       WX_GL_MIN_BLUE WX_GL_MIN_ALPHA WX_GL_DEPTH_SIZE WX_GL_STENCIL_SIZE
+       WX_GL_MIN_ACCUM_RED WX_GL_MIN_ACCUM_GREEN WX_GL_MIN_ACCUM_BLUE
+       WX_GL_MIN_ACCUM_ALPHA) );
+our %EXPORT_TAGS =
+  ( all        => \@EXPORT_OK,
+    everything => \@EXPORT_OK,
+    );
+
 $Wx::GLCanvas::VERSION = '0.08';
 
 Wx::load_dll( 'gl' );
 Wx::wx_boot( 'Wx::GLCanvas', $Wx::GLCanvas::VERSION );
+
+our $AUTOLOAD;
+sub AUTOLOAD {
+  ( my $constname = $AUTOLOAD ) =~ s<^.*::>{};
+  my $val = constant( $constname, 0 );
+
+  if( $! != 0 ) {
+# re-add this if need support for autosplitted subroutines
+#    $AutoLoader::AUTOLOAD = $AUTOLOAD;
+#    goto &AutoLoader::AUTOLOAD;
+    Wx::_croak( "Error while autoloading '$AUTOLOAD'" );
+  }
+
+  eval "sub $AUTOLOAD() { $val }";
+  goto &$AUTOLOAD;
+}
 
 1;
 

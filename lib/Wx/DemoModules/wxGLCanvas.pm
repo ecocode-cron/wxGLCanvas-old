@@ -5,7 +5,7 @@
 ## Modified by:
 ## Created:     26/07/2003
 ## RCS-ID:      $Id$
-## Copyright:   (c) 2000, 2006 Mattia Barbon
+## Copyright:   (c) 2000, 2006, 2008 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
 #############################################################################
@@ -18,12 +18,16 @@ use Wx::Event qw(EVT_PAINT EVT_SIZE EVT_ERASE_BACKGROUND EVT_IDLE EVT_TIMER);
 # must load OpenGL *before* Wx::GLCanvas
 use OpenGL qw(:glconstants :glfunctions);
 use base qw(Wx::GLCanvas Class::Accessor::Fast);
+use Wx::GLCanvas qw(:all);
 
 __PACKAGE__->mk_accessors( qw(timer x_rot y_rot dirty init) );
 
 sub new {
     my( $class, $parent ) = @_;
     my $self = $class->SUPER::new( $parent );
+#     my $self = $class->SUPER::new( $parent, -1, [-1, -1], [-1, -1], 0,
+#                                    "GLCanvas",
+#                                    [WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0] );
 
     my $timer = $self->timer( Wx::Timer->new( $self ) );
     $timer->Start( 50 );

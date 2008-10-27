@@ -55,10 +55,53 @@ int* wxPli_get_attribute_list( pTHX_ SV* avref )
     return array;
 }
 
+static double constant( const char *name, int arg )
+{
+    errno = 0;
+
+#define r( n ) \
+    if( strEQ( name, #n ) ) \
+        return n;
+
+    switch( name[0] )
+    {
+    case 'W':
+        r( WX_GL_RGBA );
+        r( WX_GL_BUFFER_SIZE );
+        r( WX_GL_LEVEL );
+        r( WX_GL_DOUBLEBUFFER );
+        r( WX_GL_STEREO );
+        r( WX_GL_AUX_BUFFERS );
+        r( WX_GL_MIN_RED );
+        r( WX_GL_MIN_GREEN );
+        r( WX_GL_MIN_BLUE );
+        r( WX_GL_MIN_ALPHA );
+        r( WX_GL_DEPTH_SIZE );
+        r( WX_GL_STENCIL_SIZE );
+        r( WX_GL_MIN_ACCUM_RED );
+        r( WX_GL_MIN_ACCUM_GREEN );
+        r( WX_GL_MIN_ACCUM_BLUE );
+        r( WX_GL_MIN_ACCUM_ALPHA );
+        break;
+    default:
+        break;
+    }
+
+#undef r
+    errno = EINVAL;
+
+    return 0;
+}
+
 MODULE=Wx__GLCanvas PACKAGE=Wx::GLCanvas
 
 BOOT:
   INIT_PLI_HELPERS( wx_pli_helpers );
+
+double
+constant( name, arg )
+    const char* name
+    int arg
 
 ## DECLARE_OVERLOAD( wglx, Wx::GLContext )
 ## DECLARE_OVERLOAD( wglc, Wx::GLCanvas )
