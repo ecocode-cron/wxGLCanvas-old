@@ -1,6 +1,6 @@
 Revision history for Perl extension Wx::GLCanvas.
 
-0.08
+0.08  Thu Aug  6 20:12:12 CEST 2009
 	- Add attribute list parameter to wxGLCanvas constructor
 	  and wrap WX_GL_* constants.
 
