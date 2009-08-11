@@ -5,7 +5,7 @@
 ## Modified by:
 ## Created:     26/07/2003
 ## RCS-ID:      $Id$
-## Copyright:   (c) 2003, 2005, 2007-2008 Mattia Barbon
+## Copyright:   (c) 2003, 2005, 2007-2009 Mattia Barbon
 ## Licence:     This program is free software; you can redistribute it and/or
 ##              modify it under the same terms as Perl itself
 #############################################################################
@@ -28,7 +28,7 @@ our %EXPORT_TAGS =
     everything => \@EXPORT_OK,
     );
 
-$Wx::GLCanvas::VERSION = '0.08';
+$Wx::GLCanvas::VERSION = '0.09';
 
 Wx::load_dll( 'gl' );
 Wx::wx_boot( 'Wx::GLCanvas', $Wx::GLCanvas::VERSION );
@@ -36,6 +36,7 @@ Wx::wx_boot( 'Wx::GLCanvas', $Wx::GLCanvas::VERSION );
 our $AUTOLOAD;
 sub AUTOLOAD {
   ( my $constname = $AUTOLOAD ) =~ s<^.*::>{};
+  return if $constname eq 'DESTROY';
   my $val = constant( $constname, 0 );
 
   if( $! != 0 ) {

@@ -1,5 +1,8 @@
 Revision history for Perl extension Wx::GLCanvas.
 
+0.09  Tue Aug 11 21:06:05 CEST 2009
+	- Do not try to autoload DESTROY as if it were a constant.
+
 0.08  Thu Aug  6 20:12:12 CEST 2009
 	- Add attribute list parameter to wxGLCanvas constructor
 	  and wrap WX_GL_* constants.
